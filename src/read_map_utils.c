@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_map_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanypar <chanypar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 20:10:35 by chanypar          #+#    #+#             */
-/*   Updated: 2025/04/16 08:37:33 by chanypar         ###   ########.fr       */
+/*   Updated: 2025/05/10 15:52:20 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 int	ft_isspace(char c)
 {
@@ -54,46 +54,13 @@ int	check_extension(char *line)
 	return (0);
 }
 
-int	set_xpm2(t_param *p, char *temp, int id)
+int	set_xpm(t_data *data, char *temp, int id)
 {
-	if (id == ID_WE)
-	{
-		if (p->img_west)
-			return (2);
-		p->img_west = mlx_xpm_file_to_image(p->mlx, temp, &p->img_w, &p->img_h);
-		if (!p->img_west)
-			return (1);
-	}
-	if (id == ID_EA)
-	{
-		if (p->img_east)
-			return (2);
-		p->img_east = mlx_xpm_file_to_image(p->mlx, temp, &p->img_w, &p->img_h);
-		if (!p->img_east)
-			return (1);
-	}
-	return (0);
-}
-
-int	set_xpm(t_param *p, char *temp, int id)
-{
-	if (id == ID_NO)
-	{
-		if (p->img_north)
-			return (2);
-		p->img_north
-			= mlx_xpm_file_to_image(p->mlx, temp, &p->img_w, &p->img_h);
-		if (!p->img_north)
-			return (1);
-	}
-	if (id == ID_SO)
-	{
-		if (p->img_south)
-			return (2);
-		p->img_south
-			= mlx_xpm_file_to_image(p->mlx, temp, &p->img_w, &p->img_h);
-		if (!p->img_south)
-			return (1);
-	}
-	return (set_xpm2(p, temp, id));
+	data->textures = ft_calloc(5, sizeof * data->textures);
+	if (!data->textures)
+		clean_exit(data, err_msg(NULL, ERR_MALLOC, 1));
+	data->textures[NORTH] = xpm_to_img(data, data->texinfo.img_north);
+	data->textures[SOUTH] = xpm_to_img(data, data->texinfo.img_south);
+	data->textures[EAST] = xpm_to_img(data, data->texinfo.img_east);
+	data->textures[WEST] = xpm_to_img(data, data->texinfo.img_west);
 }

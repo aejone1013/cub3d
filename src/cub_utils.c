@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 void	ft_free_2d(char **str)
 {
@@ -51,7 +51,6 @@ int	check_argv(char *argv)
 
 void	init_data(t_data *data, char *av)
 {
-	data->mlx = mlx_init();
 	if (check_argv(av))
 	{
 		mlx_destroy_display(data->mlx);
@@ -59,14 +58,13 @@ void	init_data(t_data *data, char *av)
 		ft_printf("Error\nnote : not valid filename\n");
 		exit(0);
 	}
-	data->map.path = av;
-	data->pause = 0;
-	data->img.img_north = NULL;
-	data->img.img_south = NULL;
-	data->img.img_west = NULL;
-	data->img.img_east = NULL;
-	data->player.position.x = 0;
-	data->player.position.y = 0;
+	data->mapinfo.path = av;
+	data->texinfo.img_north = NULL;
+	data->texinfo.img_south = NULL;
+	data->texinfo.img_west = NULL;
+	data->texinfo.img_east = NULL;
+	data->player.pos_x = 0;
+	data->player.pos_y = 0;
 }
 
 void	error(char *note, int error_code)
@@ -80,15 +78,15 @@ void	error(char *note, int error_code)
 		ft_printf("Error\nnote : %s\n", note);
 		exit(0);
 	}
-	if (data->img.img_south)
-		mlx_destroy_image(data->mlx, data->img.img_south);
-	if (data->img.img_east)
-		mlx_destroy_image(data->mlx, data->img.img_east);
-	if (data->img.img_west)
-		mlx_destroy_image(data->mlx, data->img.img_west);
-	if (data->img.img_north)
-		mlx_destroy_image(data->mlx, data->img.img_north);
-	ft_free_2d(data->map.map);
+	if (data->texinfo.img_south)
+		mlx_destroy_image(data->mlx, data->texinfo.img_south);
+	if (data->texinfo.img_east)
+		mlx_destroy_image(data->mlx, data->texinfo.img_east);
+	if (data->texinfo.img_west)
+		mlx_destroy_image(data->mlx, data->texinfo.img_west);
+	if (data->texinfo.img_north)
+		mlx_destroy_image(data->mlx, data->texinfo.img_north);
+	ft_free_2d(data->map);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
 	ft_printf("Error\nnote : %s\n", note);

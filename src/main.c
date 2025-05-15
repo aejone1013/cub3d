@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 int	malloc_free(t_data *data)
 {
@@ -18,27 +18,17 @@ int	malloc_free(t_data *data)
 
     i = -1;
     ft_printf("window closed\n");
-    while (data->map.map[++i])
-        free(data->map.map[i]);
-    free(data->map.map);
-    mlx_destroy_window(data->mlx, data->window);
-    mlx_destroy_image(data->mlx, data->img.img_north);
-    mlx_destroy_image(data->mlx, data->img.img_south);
-    mlx_destroy_image(data->mlx, data->img.img_east);
-    mlx_destroy_image(data->mlx, data->img.img_west);
+    while (data->map[++i])
+        free(data->map[i]);
+    free(data->map);
+    mlx_destroy_window(data->mlx, data->win);
+    mlx_destroy_image(data->mlx, data->texinfo.img_north);
+    mlx_destroy_image(data->mlx, data->texinfo.img_south);
+    mlx_destroy_image(data->mlx, data->texinfo.img_east);
+    mlx_destroy_image(data->mlx, data->texinfo.img_west);
     free(data->mlx);
     exit(0);
     return (0);
-}
-
-void	start_game(t_data *data)
-{
-    mlx_loop_hook(data->mlx, rc_rendering, data);
-    mlx_hook(data->window, KeyPress, KeyPressMask, &key_events, data);
-    mlx_hook(data->window, DestroyNotify, StructureNotifyMask, &cleanup, data);
-    mlx_hook(data->window, ButtonPress, ButtonPressMask, &mouse_press, data);
-    mlx_hook(data->window, MotionNotify, PointerMotionMask, &mouse_move, data);
-    mlx_loop(data->mlx);
 }
 
 int	main(int ac, char **av)
@@ -46,12 +36,13 @@ int	main(int ac, char **av)
     t_data	data;
 
     if (ac != 2)
-    {
-        ft_printf("Error\nnote : this program takes one map.\n");
-        exit(0);
-    }
+		return (err_msg("Usage", ERR_USAGE, 1));
     init_data(&data, av[1]);
     read_map(&data);
-    start_game(&data);
-    return (0);
+	init_mlx(&data);
+	rd_render_imgs(&data);
+	input_handler(&data);
+	mlx_loop_hook(data.mlx, rd_render, &data);
+	mlx_loop(data.mlx);
+	return (0);
 }

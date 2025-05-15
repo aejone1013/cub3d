@@ -6,33 +6,33 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 10:50:19 by chanypar          #+#    #+#             */
-/*   Updated: 2025/04/20 17:56:11 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/05/10 15:44:25 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 void	create_real_map(char **map, int start, t_data *data)
 {
     int	i;
 
     i = 0;
-    data->map.map = malloc((data->map.height - start + 1) * sizeof(char *));
-    if (!data->map.map)
+    data->map = malloc((data->mapinfo.height - start + 1) * sizeof(char *));
+    if (!data->map)
         error("malloc error", 1, data);
-    while (map[start])
+    while (map[start] && i < (data->mapinfo.height - start))
     {
-        data->map.map[i] = malloc(ft_strlen(map[start]) + 1);
-        if (!data->map.map[i])
+        data->mapinfo.map[i] = malloc(ft_strlen(map[start]) + 1);
+        if (!data->mapinfo.map[i])
         {
-            ft_free_2d(data->map.map);
+            ft_free_2d(data->mapinfo.map);
             error("malloc error", 1, data);
         }
-        ft_strlcpy(data->map.map[i], map[start], ft_strlen(map[start]) + 1);
+        ft_strlcpy(data->mapinfo.map[i], map[start], ft_strlen(map[start]) + 1);
         i++;
         start++;
     }
-    data->map.map[i] = NULL;
+    data->mapinfo.map[i] = NULL;
 }
 
 void	check_endline(char **map, t_data *data)
@@ -42,7 +42,7 @@ void	check_endline(char **map, t_data *data)
     i = 0;
     while (map[i])
         i++;
-    data->map.height = i;
+    data->mapinfo.height = i;
 }
 
 void	check_file(char **map, t_data *data)
@@ -55,7 +55,7 @@ void	check_file(char **map, t_data *data)
     {
         check_line(map[i], data);
         if (data->img.img_north && data->img.img_south && data->img.img_west
-            && data->img.img_east && (data->map.floor && data->map.sky))
+            && data->img.img_east && (data->mapinfo.floor && data->mapinfo.sky))
         {
             i++;
             break ;
@@ -78,46 +78,46 @@ void	print_check(t_data *data)
     int		i;
 
     i = 0;
-    printf("NO : %p\n", data->img.img_north);
-    printf("SO : %p\n", data->img.img_south);
-    printf("EA : %p\n", data->img.img_east);
-    printf("WE : %p\n", data->img.img_west);
+    printf("NO : %p\n", data->texinfo.img_north);
+    printf("SO : %p\n", data->texinfo.img_south);
+    printf("EA : %p\n", data->texinfo.img_east);
+    printf("WE : %p\n", data->texinfo.img_west);
     printf("C : ");
     while (i < 3)
-        printf("%d ", (data->map.sky >> (16 - (i * 8))) & 0xFF);
+        printf("%d ", (data->texinfo.sky >> (16 - (i * 8))) & 0xFF);
     i = 0;
     printf("\nF : ");
     while (i < 3)
-        printf("%d ", (data->map.floor >> (16 - (i * 8))) & 0xFF);
+        printf("%d ", (data->texinfo.floor >> (16 - (i * 8))) & 0xFF);
     i = -1;
     printf("\n\nreal map start\n\n");
-    while (data->map.map[++i])
-        printf("%s\n", data->map.map[i]);
+    while (data->mapinfo.map[++i])
+        printf("%s\n", data->mapinfo.map[i]);
 }
 
 void	read_map(t_data *data)
 {
-    data->map.fd = open(data->map.path, O_RDONLY);
-    if (data->map.fd <= 0)
+    data->mapinfo.fd = open(data->mapinfo.path, O_RDONLY);
+    if (data->mapinfo.fd <= 0)
         error("invalid fd", 0, data);
-    data->mapdata->line = malloc(1);
-    if (!data->mapdata->line)
+    data->mapinfo->line = malloc(1);
+    if (!data->mapinfo->line)
         error("failed a malloc to line", 0, data);
-    data->mapdata->line[0] = '\0';
-    data->mapdata->buff = get_next_line(data->map.fd);
-    while (data->mapdata->buff)
+    data->mapinfo->line[0] = '\0';
+    data->mapinfo->buff = get_next_line(data->mapinfo.fd);
+    while (data->mapinfo->buff)
     {
-        data->mapdata->temp = ft_strjoin(data->mapdata->line, data->mapdata->buff);
-        free(data->mapdata->line);
-        free(data->mapdata->buff);
-        data->mapdata->line = ft_strdup(data->mapdata->temp);
-        free(data->mapdata->temp);
-        data->mapdata->buff = get_next_line(data->map.fd);
+        data->mapinfo->temp = ft_strjoin(data->mapinfo->line, data->mapinfo->buff);
+        free(data->mapinfo->line);
+        free(data->mapinfo->buff);
+        data->mapinfo->line = ft_strdup(data->mapinfo->temp);
+        free(data->mapinfo->temp);
+        data->mapinfo->buff = get_next_line(data->mapinfo.fd);
     }
-    close(data->map.fd);
-    data->map.map = ft_split_parsing(data->mapdata->line);
-    check_file(data->map.map, data);
+    close(data->mapinfo.fd);
+    data->mapinfo.map = ft_split_parsing(data->mapinfo->line);
+    check_file(data->mapinfo.file, data);
     print_check(data);
-    ft_free_2d(data->map.map);
+    ft_free_2d(data->mapinfo.file);
     error("no error", 1, data);
 }

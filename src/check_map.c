@@ -6,11 +6,11 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 20:13:39 by chanypar          #+#    #+#             */
-/*   Updated: 2025/04/20 17:56:10 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/05/09 11:13:02 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 void	check_id(char *line, int i, int id, t_data *data)
 {

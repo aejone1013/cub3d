@@ -6,7 +6,7 @@
 #    By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 20:36:57 by jaoh              #+#    #+#              #
-#    Updated: 2025/04/20 17:56:12 by jaoh             ###   ########.fr        #
+#    Updated: 2025/05/10 16:54:08 by jaoh             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,15 +30,25 @@ LIBFT		= ${LIBFT_DIR}/libft.a
 
 MLX 		= ${MLX_DIR}/libmlx.a
 
-SRC			 = main.c cub_utils.c check_map.c color_utils.c \
+SRC			= main.c cub_utils.c check_map.c color_utils.c \
 				parse_rgb.c read_map_utils.c read_map_utils2.c \
 				read_map.c
+SRC_RENDER	= raycasting.c render.c
+SRC_MOVE	= player.c
+SRC_UTILS	= utils.c
 
 SRC_DIR		= src/
+RENDER_DIR	= src/render/
+MOVE_DIR	= src/move/
+UTILS_DIR	= src/utils/
+
+
+SRCS 		=	$(addprefix $(SRC_DIR), $(SRC)) \
+				$(addprefix $(RENDER_DIR), $(SRC_RENDER)) \
+				$(addprefix $(MOVE_DIR), $(SRC_MOVE)) \
+				$(addprefix $(UTILS_DIR), $(SRC_MOVE))
 
 OBJ_DIR		= obj/
-
-SRCS 		= $(addprefix $(SRC_DIR), $(SRC))
 
 OBJS		= $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRCS))
 
