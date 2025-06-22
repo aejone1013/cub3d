@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 21:26:18 by jaoh              #+#    #+#             */
-/*   Updated: 2025/05/10 17:13:05 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/21 15:53:39 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,21 @@
 # define WIN_WIDTH 960
 # define WIN_HEIGHT	720
 
+# define MMAP_PIXEL_SIZE 128
+# define MMAP_VIEW_DIST 4
+# define MMAP_COLOR_PLAYER 0x00FF00
+# define MMAP_COLOR_WALL 0x808080
+# define MMAP_COLOR_FLOOR 0xE6E6E6
+# define MMAP_COLOR_SPACE 0x404040
+
 # define MOVESPEED 0.0125
 # define ROTSPEED 0.015
 
 # define DIST_EDGE_MOUSE_WRAP 20
+
+# ifndef BONUS
+#  define BONUS 1
+# endif
 
 # define ERR_USAGE "ex: ./cub3d map.cub"
 # define ERR_FILE_NOT_CUB "Not a .cub file"
@@ -64,6 +75,13 @@
 # define ERR_MLX_WIN "Could not create mlx window"
 # define ERR_MLX_IMG "Could not create mlx image"
 
+# define ID_F			100
+# define ID_C			101
+# define ID_NO			102
+# define ID_SO			103
+# define ID_WE			104
+# define ID_EA			105
+
 typedef enum e_output
 {
     SUCCESS = 0,
@@ -71,7 +89,7 @@ typedef enum e_output
     ERR = 2,
     BREAK = 3,
     CONTINUE = 4
-};
+}   t_output;
 
 typedef enum e_texture
 {
@@ -90,6 +108,17 @@ typedef struct s_img
     int		endian;
 }	t_img;
 
+typedef struct s_minimap
+{
+	char	**map;
+	t_img	*img;
+	int		size;
+	int		offset_x;
+	int		offset_y;
+	int		view_dist;
+	int		tile_size;
+}	t_minimap;
+
 typedef struct s_texinfo
 {
     char			*img_north;
@@ -107,6 +136,20 @@ typedef struct s_texinfo
     int				x;
     int				y;
 }	t_texinfo;
+
+typedef struct s_parsing
+{
+	int			fd; 				// 파일 디스크립터
+	char		*file; 				// 읽은 파일 명
+	int			endline; 			// 맵 파싱 때 제대로 모든 요소들이 있는 지 확인용
+	char		*line; 				// 맵 파싱 떼, 맵을 스플릿하기 위해 파일 내용 저장하는 라인
+	char		*temp;
+	char		**file_content; 	// 스플릿 이후 반환된 배열
+	char		*buff;
+	char		player_character; 	// 플래이어가 어디를 바라보는 지 저장하는 변수
+	int			check_sky;
+	int			check_land;
+}		t_parsing;
 
 typedef struct s_player
 {
@@ -153,54 +196,73 @@ typedef struct s_mapinfo
     int			height;
     int			width;
     int			index_end_of_map;
+    char		*line; 				// 맵 파싱 떼, 맵을 스플릿하기 위해 파일 내용 저장하는 라인
+	char		*temp;
+	char		*buff;
 }	t_mapinfo;
 
 typedef struct s_data
 {
     void		*mlx;
-    void		*win;
+    void		*window;
     int			win_height;
     int			win_width;
-    t_mapinfo	mapinfo;
-    t_img		img;
     char		**map;
-    t_player	player;
-    t_ray		ray;
     int			**texture_pixels;
     int			**textures;
+    t_player	player;
+    t_mapinfo	mapinfo;
     t_texinfo	texinfo;
+    t_img		minimap;
+    t_ray		ray;
+    t_parsing   parsing;
 }	t_data;
 
-/* Function Prototypes */
-void	rd_render_imgs(t_data *data);
-void	init_ray(t_ray *ray);
-void	rd_init_img(t_data *data, t_img *img, int width, int height);
-int		malloc_free(t_data *data);
+/* init */
 void	init_data(t_data *data, char *av);
-void	read_map(t_data *data);
-void	error(char *note, int error_code, t_data *data);
+void	init_img_clean(t_img *img);
+void	init_ray(t_ray *ray);
+void	init_img(t_data *data, t_img *image, int width, int height);
+void	init_texture_img(t_data *data, t_img *image, char *path);
+void	init_mlx(t_data *data);
+
+/* move */
+void	input_handler(t_data *data);
+void	init_player_direction(t_data *data);
+int     player_move(t_data *data);
+int     validate_move(t_data *data, double new_x, double new_y);
+int     rotate_player(t_data *data, double rotdir);
+
+/* parse */
 void	ft_free_2d(char **str);
+int	    check_argv(char *argv);
+void	error(char *note, int error_code, t_data *data);
+int	    ft_isspace(char c);
+char	*str_no_isspace(char *line, int start, int id_check);
+int	    check_extension(char *line);
+int	    set_xpm(t_data *data, char *temp, int id);
+int	    put_rgb_utils(char *path, t_data *data, int id);
 void	check_line(char *line, t_data *data);
 void	check_map(char **map, int i, t_data *data);
-int		ft_isspace(char c);
-char	*str_no_isspace(char *line, int start, int id_check);
-void	put_rgb(char *line, int start, int id, t_data *data);
-int		put_rgb_utils(char *path, t_data *data, int id);
-int		check_extension(char *line);
-int		set_xpm(t_data *data, char *temp, int id);
 char	**ft_split_parsing(char const *s);
-int		rd_render(t_data *data);
-void	clean_exit(t_data *data, int code);
-int		free_data(t_data *data);
-void	free_tab(void **tab);
-int		raycasting(t_player *player, t_data *data);
-void	rd_update_tex_pix(t_data *data, t_texinfo *tex, t_ray *ray, int x);
+void	put_rgb(char *line, int start, int id, t_data *data);
+void	read_map(t_data *data);
+
+/* render */
+void	rd_set_image_pixel(t_img *img, int x, int y, int color);
+void	rd_render_minimap(t_data *data);
+void	rd_render_minimap_img(t_data *data, t_minimap *minimap);
+int     rd_raycasting(t_player *player, t_data *data);
+void	rd_render_imgs(t_data *data);
+int     rd_render(t_data *data);
 void	rd_init_tex_pix(t_data *data);
-int		player_move(t_data *data);
-int		quit_cub3d(t_data *data);
-void	input_handler(t_data *data);
-int		rotate_player(t_data *data, double rotdir);
-int		validate_move(t_data *data, double new_x, double new_y);
-void	init_player_direction(t_data *data);
+void	rd_update_tex_pix(t_data *data, t_texinfo *tex, t_ray *ray, int x);
+
+/* utils*/
+void	free_tab(void **tab);
+int	    free_data(t_data *data);
+void	clean_exit(t_data *data, int code);
+int	    quit_cub3d(t_data *data);
+int	    err_msg(char *detail, char *str, int code);
 
 #endif

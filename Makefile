@@ -6,7 +6,7 @@
 #    By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 20:36:57 by jaoh              #+#    #+#              #
-#    Updated: 2025/05/10 16:54:08 by jaoh             ###   ########.fr        #
+#    Updated: 2025/06/20 20:17:19 by jaoh             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,23 +30,28 @@ LIBFT		= ${LIBFT_DIR}/libft.a
 
 MLX 		= ${MLX_DIR}/libmlx.a
 
-SRC			= main.c cub_utils.c check_map.c color_utils.c \
-				parse_rgb.c read_map_utils.c read_map_utils2.c \
-				read_map.c
-SRC_RENDER	= raycasting.c render.c
-SRC_MOVE	= player.c
+SRC			= main.c
+SRC_RENDER	= image_utils.c minimap_image.c minimap_render.c raycasting.c render.c texture.c
+SRC_MOVE	= p_move.c p_rotate.c p_position.c p_direction.c input_handler.c
 SRC_UTILS	= utils.c
+SRC_PARSE	= cub_utils.c read_map.c read_map_utils.c read_map_utils2.c \
+				read_map_utils3.c read_map_utils4.c read_map_utils5.c
+SRC_INIT	= init_data.c init_mlx.c
 
 SRC_DIR		= src/
 RENDER_DIR	= src/render/
 MOVE_DIR	= src/move/
 UTILS_DIR	= src/utils/
+PARSE_DIR	= src/parse/
+INIT_DIR	= src/init/
 
 
 SRCS 		=	$(addprefix $(SRC_DIR), $(SRC)) \
 				$(addprefix $(RENDER_DIR), $(SRC_RENDER)) \
 				$(addprefix $(MOVE_DIR), $(SRC_MOVE)) \
-				$(addprefix $(UTILS_DIR), $(SRC_MOVE))
+				$(addprefix $(UTILS_DIR), $(SRC_UTILS)) \
+				$(addprefix $(PARSE_DIR), $(SRC_PARSE)) \
+				$(addprefix $(INIT_DIR), $(SRC_INIT)) 
 
 OBJ_DIR		= obj/
 

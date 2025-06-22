@@ -12,25 +12,6 @@
 
 #include "cub3d.h"
 
-int	malloc_free(t_data *data)
-{
-    int	i;
-
-    i = -1;
-    ft_printf("window closed\n");
-    while (data->map[++i])
-        free(data->map[i]);
-    free(data->map);
-    mlx_destroy_window(data->mlx, data->win);
-    mlx_destroy_image(data->mlx, data->texinfo.img_north);
-    mlx_destroy_image(data->mlx, data->texinfo.img_south);
-    mlx_destroy_image(data->mlx, data->texinfo.img_east);
-    mlx_destroy_image(data->mlx, data->texinfo.img_west);
-    free(data->mlx);
-    exit(0);
-    return (0);
-}
-
 int	main(int ac, char **av)
 {
     t_data	data;
@@ -39,7 +20,6 @@ int	main(int ac, char **av)
 		return (err_msg("Usage", ERR_USAGE, 1));
     init_data(&data, av[1]);
     read_map(&data);
-	init_mlx(&data);
 	rd_render_imgs(&data);
 	input_handler(&data);
 	mlx_loop_hook(data.mlx, rd_render, &data);

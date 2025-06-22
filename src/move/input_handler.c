@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 16:55:07 by jaoh              #+#    #+#             */
-/*   Updated: 2025/05/10 17:16:34 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/20 18:36:29 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ static void	wrap_mouse_position(t_data *data, int x, int y)
 	if (x > data->win_width - DIST_EDGE_MOUSE_WRAP)
 	{
 		x = DIST_EDGE_MOUSE_WRAP;
-		mlx_mouse_move(data->mlx, data->win, x, y);
+		mlx_mouse_move(data->mlx, data->window, x, y);
 	}
 	if (x < DIST_EDGE_MOUSE_WRAP)
 	{
 		x = data->win_width - DIST_EDGE_MOUSE_WRAP;
-		mlx_mouse_move(data->mlx, data->win, x, y);
+		mlx_mouse_move(data->mlx, data->window, x, y);
 	}
 }
 
-static int	mouse_motion_handler(int x, int y, t_data *data)
+static int		mouse_motion_handler(int x, int y, t_data *data)
 {
 	static int	old_x = WIN_WIDTH / 2;
 
@@ -81,7 +81,10 @@ static int	mouse_motion_handler(int x, int y, t_data *data)
 
 void	input_handler(t_data *data)
 {
-	mlx_hook(data->win, ClientMessage, NoEventMask, quit_cub3d, data);
-	mlx_hook(data->win, KeyPress, KeyPressMask, key_press_handler, data);
-	mlx_hook(data->win, KeyRelease, KeyReleaseMask, key_release_handler, data);
+	mlx_hook(data->window, ClientMessage, NoEventMask, quit_cub3d, data);
+	mlx_hook(data->window, KeyPress, KeyPressMask, key_press_handler, data);
+	mlx_hook(data->window, KeyRelease, KeyReleaseMask, key_release_handler, data);
+	if (BONUS)
+		mlx_hook(data->window, MotionNotify, PointerMotionMask,
+			mouse_motion_handler, data);
 }

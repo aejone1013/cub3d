@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 16:09:44 by jaoh              #+#    #+#             */
-/*   Updated: 2025/05/10 17:10:38 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/20 19:53:25 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void	get_line_height(t_ray *ray, t_data *data, t_player *player)
 	ray->wall_x -= floor(ray->wall_x);
 }
 
-int	raycasting(t_player *player, t_data *data)
+int	rd_raycasting(t_player *player, t_data *data)
 {
 	t_ray	ray;
 	int		x;

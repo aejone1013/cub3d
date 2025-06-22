@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void	ft_free_2d(char **str)
+void	ft_free_2d(char **str) // 2차원 배열 메모리 해제
 {
 	int	i;
 
@@ -25,7 +25,7 @@ void	ft_free_2d(char **str)
 	free(str);
 }
 
-int	check_argv(char *argv)
+int	check_argv(char *argv) // 확장자가 ".cub" 인지 확인
 {
 	int		str;
 	int		cnt;
@@ -49,46 +49,17 @@ int	check_argv(char *argv)
 	return (ft_free_2d(tmp), 0);
 }
 
-void	init_data(t_data *data, char *av)
+void	error(char *note, int error_code, t_data *data) // 에러 확인 후, 메모리 해제
 {
-	if (check_argv(av))
-	{
-		mlx_destroy_display(data->mlx);
-		free(data->mlx);
-		ft_printf("Error\nnote : not valid filename\n");
-		exit(0);
-	}
-	data->mapinfo.path = av;
-	data->texinfo.img_north = NULL;
-	data->texinfo.img_south = NULL;
-	data->texinfo.img_west = NULL;
-	data->texinfo.img_east = NULL;
-	data->player.pos_x = 0;
-	data->player.pos_y = 0;
-}
-
-void	error(char *note, int error_code)
-{
-	t_data *data;
-	
-	if (error_code == 0)
-	{
-		mlx_destroy_display(data->mlx);
-		free(data->mlx);
-		ft_printf("Error\nnote : %s\n", note);
-		exit(0);
-	}
-	if (data->texinfo.img_south)
-		mlx_destroy_image(data->mlx, data->texinfo.img_south);
-	if (data->texinfo.img_east)
-		mlx_destroy_image(data->mlx, data->texinfo.img_east);
-	if (data->texinfo.img_west)
-		mlx_destroy_image(data->mlx, data->texinfo.img_west);
-	if (data->texinfo.img_north)
-		mlx_destroy_image(data->mlx, data->texinfo.img_north);
-	ft_free_2d(data->map);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	ft_printf("Error\nnote : %s\n", note);
-	exit(0);
+	if (error_code == 2 && data->window)
+        mlx_destroy_window(data->mlx, data->window);
+    if (data->mlx)
+    {
+        mlx_destroy_display(data->mlx);
+        free(data->mlx);
+        data->mlx = NULL;
+    }
+    free_data(data);
+    ft_printf("Error\nnote : %s\n", note);
+    exit(1);
 }

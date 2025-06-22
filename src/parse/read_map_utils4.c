@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_map_utils2.c                                  :+:      :+:    :+:   */
+/*   read_map_utils4.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 20:16:10 by chanypar          #+#    #+#             */
-/*   Updated: 2025/05/09 11:11:32 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/20 19:11:55 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	count_words(char const *s, char c)
+static int	count_words(char const *s, char c)
 {
 	int	count;
 	int	i;
@@ -54,7 +54,7 @@ static void	move_s(char *new_s, char const *s, char c)
 	new_s[i] = '\0';
 }
 
-int	split_helper(int *i, int *j, char **arr, char const *s)
+static int	split_helper(int *i, int *j, char **arr, char const *s)
 {
 	if (s[*j] == '\n')
 	{
@@ -69,7 +69,7 @@ int	split_helper(int *i, int *j, char **arr, char const *s)
 	return (1);
 }
 
-void	split2(char **arr, char const *s)
+static void	split2(char **arr, char const *s)
 {
 	int	i;
 	int	j;
@@ -97,7 +97,7 @@ void	split2(char **arr, char const *s)
 	arr[i] = NULL;
 }
 
-char	**ft_split_parsing(char const *s)
+char	**ft_split_parsing(char const *s) // 읽은 파일을 2차배열로 저장 (개행문자 전부 살려서 저장)
 {
 	char	**arr;
 

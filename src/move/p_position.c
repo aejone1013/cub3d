@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_pos.c                                       :+:      :+:    :+:   */
+/*   p_position.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 16:58:23 by jaoh              #+#    #+#             */
-/*   Updated: 2025/05/10 16:59:41 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/20 18:31:25 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static bool	is_valid_pos(t_data *data, double x, double y)
 {
 	if (is_valid_pos_in_map(data, x, y))
 		return (true);
-	// if (is_valid_pos_wall_collision(data, x, y))
+	if (is_valid_pos_wall_collision(data, x, y))
 		return (true);
 	return (false);
 }

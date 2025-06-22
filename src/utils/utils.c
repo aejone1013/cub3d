@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 10:53:13 by jaoh              #+#    #+#             */
-/*   Updated: 2025/05/10 17:12:04 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/21 16:22:26 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@ void	free_tab(void **tab)
 	}
 }
 
-static void	free_texinfo(t_texinfo *textures)
+static void	free_texinfo(t_texinfo *texinfo)
 {
-	if (textures->img_north)
-		free(textures->img_north);
-	if (textures->img_south)
-		free(textures->img_south);
-	if (textures->img_west)
-		free(textures->img_west);
-	if (textures->img_east)
-		free(textures->img_east);
-	if (textures->floor)
-		free(textures->floor);
-	if (textures->sky)
-		free(textures->sky);
+	if (texinfo->img_north)
+		free(texinfo->img_north);
+	if (texinfo->img_south)
+		free(texinfo->img_south);
+	if (texinfo->img_west)
+		free(texinfo->img_west);
+	if (texinfo->img_east)
+		free(texinfo->img_east);
+	if (texinfo->floor)
+		free(texinfo->floor);
+	if (texinfo->sky)
+		free(texinfo->sky);
 }
 
 static void	free_map(t_data *data)
@@ -70,8 +70,8 @@ void	clean_exit(t_data *data, int code)
 {
 	if (!data)
 		exit(code);
-	if (data->win && data->mlx)
-		mlx_destroy_window(data->mlx, data->win);
+	if (data->window && data->mlx)
+		mlx_destroy_window(data->mlx, data->window);
 	if (data->mlx)
 	{
 		mlx_destroy_display(data->mlx);
@@ -86,4 +86,21 @@ int	quit_cub3d(t_data *data)
 {
 	clean_exit(data, 0);
 	return (0);
+}
+
+int	err_msg(char *detail, char *str, int code)
+{
+	ft_putstr_fd("cub3D: Error", 2);
+	if (detail)
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(detail, 2);
+	}
+	if (str)
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(str, 2);
+	}
+	ft_putstr_fd("\n", 2);
+	return (code);
 }
