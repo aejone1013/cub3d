@@ -6,57 +6,57 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 19:46:26 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/20 19:53:38 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/24 20:10:20 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	rd_init_tex_pix(t_data *data)
+void	rd_init_tex_pixels(t_data *data)
 {
 	int	i;
 
-	if (data->texture_pixels)
-		free_tab((void **)data->texture_pixels);
-	data->texture_pixels = ft_calloc(data->win_height + 1,
-			sizeof * data->texture_pixels);
-	if (!data->texture_pixels)
-		clean_exit(data, err_msg(NULL, ERR_MALLOC, 1));
+	if (data->tex_pixels)
+		free_tab((void **)data->tex_pixels);
+	data->tex_pixels = ft_calloc(data->win_height + 1,
+			sizeof * data->tex_pixels);
+	if (!data->tex_pixels)
+		ft_exit(data, err_msg(NULL, "Could not allocate memory", 1));
 	i = 0;
 	while (i < data->win_height)
 	{
-		data->texture_pixels[i] = ft_calloc(data->win_width + 1,
-				sizeof * data->texture_pixels);
-		if (!data->texture_pixels[i])
-			clean_exit(data, err_msg(NULL, ERR_MALLOC, 1));
+		data->tex_pixels[i] = ft_calloc(data->win_width + 1,
+				sizeof * data->tex_pixels);
+		if (!data->tex_pixels[i])
+			ft_exit(data, err_msg(NULL, "Could not allocate memory", 1));
 		i++;
 	}
 }
 
-static void	get_tex_idx(t_data *data, t_ray *ray)
+static void	rd_get_texture_idx(t_data *data, t_ray *ray)
 {
 	if (ray->side == 0)
 	{
 		if (ray->dir_x < 0)
-			data->texinfo.index = WEST;
+			data->texinfo.idx = WEST;
 		else
-			data->texinfo.index = EAST;
+			data->texinfo.idx = EAST;
 	}
 	else
 	{
 		if (ray->dir_y > 0)
-			data->texinfo.index = SOUTH;
+			data->texinfo.idx = SOUTH;
 		else
-			data->texinfo.index = NORTH;
+			data->texinfo.idx = NORTH;
 	}
 }
 
-void	rd_update_tex_pix(t_data *data, t_texinfo *tex, t_ray *ray, int x)
+void	rd_update_tex_pixels(t_data *data, t_texinfo *tex, t_ray *ray, int x)
 {
 	int			y;
 	int			color;
 
-	get_tex_idx(data, ray);
+	rd_get_texture_idx(data, ray);
 	tex->x = (int)(ray->wall_x * tex->size);
 	if ((ray->side == 0 && ray->dir_x < 0)
 		|| (ray->side == 1 && ray->dir_y > 0))
@@ -69,11 +69,11 @@ void	rd_update_tex_pix(t_data *data, t_texinfo *tex, t_ray *ray, int x)
 	{
 		tex->y = (int)tex->pos & (tex->size - 1);
 		tex->pos += tex->step;
-		color = data->textures[tex->index][tex->size * tex->y + tex->x];
-		if (tex->index == NORTH || tex->index == EAST)
+		color = data->textures[tex->idx][tex->size * tex->y + tex->x];
+		if (tex->idx == NORTH || tex->idx == EAST)
 			color = (color >> 1) & 8355711;
 		if (color > 0)
-			data->texture_pixels[y][x] = color;
+			data->tex_pixels[y][x] = color;
 		y++;
 	}
 }

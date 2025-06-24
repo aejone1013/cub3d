@@ -6,13 +6,13 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 16:09:44 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/20 19:53:25 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/24 20:07:44 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	init_raycasting_info(int x, t_ray *ray, t_player *player)
+static void	rd_init_ray_info(int x, t_ray *ray, t_player *player)
 {
 	init_ray(ray);
 	ray->camera_x = 2 * x / (double)WIN_WIDTH - 1;
@@ -24,7 +24,7 @@ static void	init_raycasting_info(int x, t_ray *ray, t_player *player)
 	ray->delta_y = fabs(1 / ray->dir_y);
 }
 
-static void	set_dda(t_ray *ray, t_player *player)
+static void	rd_set_dda(t_ray *ray, t_player *player)
 {
 	if (ray->dir_x < 0)
 	{
@@ -48,7 +48,7 @@ static void	set_dda(t_ray *ray, t_player *player)
 	}
 }
 
-static void	do_dda(t_data *data, t_ray *ray)
+static void	rd_perform_dda(t_data *data, t_ray *ray)
 {
 	int	hit;
 
@@ -77,7 +77,7 @@ static void	do_dda(t_data *data, t_ray *ray)
 	}
 }
 
-static void	get_line_height(t_ray *ray, t_data *data, t_player *player)
+static void	rd_calculate_line_height(t_ray *ray, t_data *data, t_player *player)
 {
 	if (ray->side == 0)
 		ray->wall_dist = (ray->side_x - ray->delta_x);
@@ -106,11 +106,11 @@ int	rd_raycasting(t_player *player, t_data *data)
 	ray = data->ray;
 	while (x < data->win_width)
 	{
-		init_raycasting_info(x, &ray, player);
-		set_dda(&ray, player);
-		do_dda(data, &ray);
-		get_line_height(&ray, data, player);
-		rd_update_tex_pix(data, &data->texinfo, &ray, x);
+		rd_init_ray_info(x, &ray, player);
+		rd_set_dda(&ray, player);
+		rd_perform_dda(data, &ray);
+		rd_calculate_line_height(&ray, data, player);
+		rd_update_tex_pixels(data, &data->texinfo, &ray, x);
 		x++;
 	}
 	return (SUCCESS);

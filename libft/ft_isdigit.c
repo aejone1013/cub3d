@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mcombeau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/01 18:12:16 by jaoh              #+#    #+#             */
-/*   Updated: 2024/08/01 18:12:16 by jaoh             ###   ########.fr       */
+/*   Created: 2021/11/22 13:53:06 by mcombeau          #+#    #+#             */
+/*   Updated: 2021/12/02 14:40:52 by mcombeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isdigit(int argument)
+/*
+	DESCRIPTION :
+	The function ft_isdigit checks whether c is a digit character or not.
+
+	RETURN VALUE:
+	Non-zero if c is a digit, zero if not.
+*/
+
+int	ft_isdigit(int c)
 {
-	return (argument >= '0' && argument <= '9');
+	if (c > 47 && c < 58)
+		return (1);
+	else
+		return (0);
 }

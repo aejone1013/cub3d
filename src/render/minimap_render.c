@@ -6,13 +6,13 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 15:13:24 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/20 19:51:43 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/24 20:05:28 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	get_mmap_offset(t_minimap *minimap, int mapsize, int pos)
+static int	rd_get_minimap_offset(t_minimap *minimap, int mapsize, int pos)
 {
 	if (pos > minimap->view_dist && mapsize - pos > minimap->view_dist + 1)
 		return (pos - minimap->view_dist);
@@ -21,14 +21,14 @@ static int	get_mmap_offset(t_minimap *minimap, int mapsize, int pos)
 	return (0);
 }
 
-static bool	is_valid_map_coord(int coord, int size)
+static bool	rd_is_valid_map_coord(int coord, int size)
 {
 	if (coord < size)
 		return (true);
 	return (false);
 }
 
-static char	*add_minimap_line(t_data *d, t_minimap *m, int y)
+static char	*rd_add_minimap_line(t_data *d, t_minimap *m, int y)
 {
 	char	*line;
 	int		x;
@@ -39,8 +39,8 @@ static char	*add_minimap_line(t_data *d, t_minimap *m, int y)
 	x = 0;
 	while (x < m->size && x < d->mapinfo.width)
 	{
-		if (!is_valid_map_coord(y + m->offset_y, d->mapinfo.height)
-			|| !is_valid_map_coord(x + m->offset_x, d->mapinfo.width))
+		if (!rd_is_valid_map_coord(y + m->offset_y, d->mapinfo.height)
+			|| !rd_is_valid_map_coord(x + m->offset_x, d->mapinfo.width))
 			line[x] = '\0';
 		else if ((int)d->player.pos_x == (x + m->offset_x)
 			&& (int)d->player.pos_y == (y + m->offset_y))
@@ -56,7 +56,7 @@ static char	*add_minimap_line(t_data *d, t_minimap *m, int y)
 	return (line);
 }
 
-static char	**generate_minimap(t_data *data, t_minimap *minimap)
+static char	**rd_generate_minimap(t_data *data, t_minimap *minimap)
 {
 	char	**mmap;
 	int		y;
@@ -67,7 +67,7 @@ static char	**generate_minimap(t_data *data, t_minimap *minimap)
 	y = 0;
 	while (y < minimap->size && y < data->mapinfo.height)
 	{
-		mmap[y] = add_minimap_line(data, minimap, y);
+		mmap[y] = rd_add_minimap_line(data, minimap, y);
 		if (!mmap[y])
 		{
 			free_tab((void **)mmap);
@@ -84,19 +84,21 @@ void	rd_render_minimap(t_data *data)
 
 	minimap.map = NULL;
 	minimap.img = &data->minimap;
-	minimap.view_dist = MMAP_VIEW_DIST;
+	minimap.view_dist = 4;
 	minimap.size = (2 * minimap.view_dist) + 1;
-	minimap.tile_size = MMAP_PIXEL_SIZE / (2 * minimap.view_dist);
-	minimap.offset_x = get_mmap_offset(&minimap,
+	minimap.tile_size = MMAP_SIZE / (2 * minimap.view_dist);
+	minimap.offset_x = rd_get_minimap_offset(&minimap,
 			data->mapinfo.width, (int)data->player.pos_x);
-	minimap.offset_y = get_mmap_offset(&minimap,
+	minimap.offset_y = rd_get_minimap_offset(&minimap,
 			data->mapinfo.height, (int)data->player.pos_y);
-	minimap.map = generate_minimap(data, &minimap);
+	minimap.map = rd_generate_minimap(data, &minimap);
 	if (!minimap.map)
 	{
-		err_msg(NULL, ERR_MALLOC, 0);
+		err_msg(NULL, "Could not allocate memory", 0);
 		return ;
 	}
+	if (MMAP_DEBUG_MSG)
+		debug_display_minimap(&minimap);
 	rd_render_minimap_img(data, &minimap);
 	free_tab((void **)minimap.map);
 }

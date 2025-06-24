@@ -1,0 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_map_borders.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/23 01:17:59 by jaoh              #+#    #+#             */
+/*   Updated: 2025/06/24 19:34:54 by jaoh             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static int	ps_check_top_or_bottom(char **map_tab, int i, int j)
+{
+	if (!map_tab || !map_tab[i] || !map_tab[i][j])
+		return (FAILURE);
+	while (map_tab[i][j] == ' ' || map_tab[i][j] == '\t'
+	|| map_tab[i][j] == '\r' || map_tab[i][j] == '\v'
+	|| map_tab[i][j] == '\f')
+		j++;
+	while (map_tab[i][j])
+	{
+		if (map_tab[i][j] != '1')
+			return (FAILURE);
+		j++;
+	}
+	return (SUCCESS);
+}
+
+int	ps_check_map_sides(t_mapinfo *map, char **map_tab)
+{
+	int	i;
+	int	j;
+
+	if (ps_check_top_or_bottom(map_tab, 0, 0) == FAILURE)
+		return (FAILURE);
+	i = 1;
+	while (i < (map->height - 1))
+	{
+		j = ft_strlen(map_tab[i]) - 1;
+		if (map_tab[i][j] != '1')
+			return (FAILURE);
+		i++;
+	}
+	if (ps_check_top_or_bottom(map_tab, i, 0) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
+}

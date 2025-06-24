@@ -3,60 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mcombeau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/01 18:10:39 by jaoh              #+#    #+#             */
-/*   Updated: 2024/08/01 18:10:39 by jaoh             ###   ########.fr       */
+/*   Created: 2021/11/24 18:06:58 by mcombeau          #+#    #+#             */
+/*   Updated: 2021/12/02 16:48:58 by mcombeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	ft_isblank(char a);
+/*
+	DESCRIPTION :
+	The function ft_atoi converts a string into an int.
 
-static	int	ft_error(int sign);
+	RETURN VALUE :
+	The converted int.
+*/
 
 int	ft_atoi(const char *str)
 {
-	int	nbr;
-	int	sign;
-	int	nbr_len;
+	int	num;
+	int	isneg;
+	int	i;
 
-	nbr = 0;
-	sign = 1;
-	nbr_len = 0;
-	while (ft_isblank(*str))
-		str++;
-	if (*str == '-' || *str == '+')
+	num = 0;
+	isneg = 1;
+	i = 0;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'
+			|| str[i] == '\n' || str[i] == '\r'
+			|| str[i] == '\v' || str[i] == '\f'))
+		i++;
+	if (str[i] == '+')
+		i++;
+	else if (str[i] == '-')
 	{
-		if (*str == '-')
-			sign = -1;
-		str++;
+		isneg *= -1;
+		i++;
 	}
-	while (ft_isdigit(*str))
+	while (ft_isdigit(str[i]))
 	{
-		if (++nbr_len == 20)
-			return (ft_error(sign));
-		nbr = (*str - 48) + nbr * 10;
-		str++;
+		num = (num * 10) + (str[i] - '0');
+		i++;
 	}
-	return (nbr * sign);
-}
-
-static	int	ft_isblank(char a)
-{
-	return ((a == '\n')
-		|| (a == '\v')
-		|| (a == '\f')
-		|| (a == '\t')
-		|| (a == '\r')
-		|| (a == ' '));
-}
-
-static	int	ft_error(int sign)
-{
-	if (sign > 0)
-		return (-1);
-	else
-		return (0);
+	return (num * isneg);
 }

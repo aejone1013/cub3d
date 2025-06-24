@@ -3,33 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mcombeau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/01 18:16:45 by jaoh              #+#    #+#             */
-/*   Updated: 2024/08/01 18:16:45 by jaoh             ###   ########.fr       */
+/*   Created: 2021/11/24 15:14:19 by mcombeau          #+#    #+#             */
+/*   Updated: 2021/12/02 16:13:28 by mcombeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dest, const char *src, size_t dest_size)
+/*
+	DESCRIPTION :
+	The function ft_strlcat appends the given string src to the end of 
+	dst. It will append at most dstsize - ft_strlen(dst) - 1 and 
+	nul-terminate the result.
+
+	Note : space for the terminating \0 character must be included in dstsize.
+
+	RETURN VALUE :
+	The total length of the string that it tried to create : the initial
+	length of dst + the length of src, with the goal to facilitate
+	truncaction detection.
+*/
+
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
-	size_t	dest_length;
-	size_t	src_length;
-	size_t	expected_dest_size;
+	size_t	j;
+	size_t	d_size;
+	size_t	s_size;
 
-	i = 0;
-	dest_length = ft_strlen(dest);
-	src_length = ft_strlen(src);
-	if (dest_size > dest_length)
+	d_size = ft_strlen(dst);
+	s_size = ft_strlen(src);
+	if (dstsize <= d_size)
+		return (dstsize + s_size);
+	i = d_size;
+	j = 0;
+	while ((i + j) < (dstsize - 1) && src[j] != '\0')
 	{
-		expected_dest_size = dest_length + src_length;
-		while (src[i] && dest_length < dest_size - 1)
-			dest[dest_length++] = src[i++];
-		dest[dest_length] = 0;
-		return (expected_dest_size);
+		dst[i + j] = src[j];
+		j++;
 	}
-	else
-		return (src_length + dest_size);
+	dst[i + j] = '\0';
+	return (d_size + s_size);
 }

@@ -6,13 +6,13 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 15:02:17 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/20 20:14:46 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/24 20:03:00 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	set_minimap_tile_pixels(t_minimap *minimap, int x, int y, int color)
+static void	rd_set_minimap_pixels(t_minimap *minimap, int x, int y, int color)
 {
 	int	i;
 	int	j;
@@ -30,29 +30,29 @@ static void	set_minimap_tile_pixels(t_minimap *minimap, int x, int y, int color)
 	}
 }
 
-static void	draw_minimap_tile(t_minimap *minimap, int x, int y)
+static void	rd_draw_minimap_tile(t_minimap *minimap, int x, int y)
 {
 	if (minimap->map[y][x] == 'P')
-		set_minimap_tile_pixels(minimap, x * minimap->tile_size,
+		rd_set_minimap_pixels(minimap, x * minimap->tile_size,
 			y * minimap->tile_size, MMAP_COLOR_PLAYER);
 	else if (minimap->map[y][x] == '1')
-		set_minimap_tile_pixels(minimap, x * minimap->tile_size,
+		rd_set_minimap_pixels(minimap, x * minimap->tile_size,
 			y * minimap->tile_size, MMAP_COLOR_WALL);
 	else if (minimap->map[y][x] == '0')
-		set_minimap_tile_pixels(minimap, x * minimap->tile_size,
+		rd_set_minimap_pixels(minimap, x * minimap->tile_size,
 			y * minimap->tile_size, MMAP_COLOR_FLOOR);
 	else if (minimap->map[y][x] == ' ')
-		set_minimap_tile_pixels(minimap, x * minimap->tile_size,
+		rd_set_minimap_pixels(minimap, x * minimap->tile_size,
 			y * minimap->tile_size, MMAP_COLOR_SPACE);
 }
 
-static void	set_minimap_border_image_pixels(t_minimap *minimap, int color)
+static void	rd_set_minimap_border_image(t_minimap *minimap, int color)
 {
 	int	size;
 	int	x;
 	int	y;
 
-	size = MMAP_PIXEL_SIZE + minimap->tile_size;
+	size = MMAP_SIZE + minimap->tile_size;
 	y = 0;
 	while (y < size)
 	{
@@ -67,7 +67,7 @@ static void	set_minimap_border_image_pixels(t_minimap *minimap, int color)
 	}
 }
 
-static void	draw_minimap(t_minimap *minimap)
+static void	rd_draw_minimap(t_minimap *minimap)
 {
 	int	x;
 	int	y;
@@ -81,23 +81,23 @@ static void	draw_minimap(t_minimap *minimap)
 			if (!minimap->map[y] || !minimap->map[y][x]
 				|| minimap->map[y][x] == '\0')
 				break ;
-			draw_minimap_tile(minimap, x, y);
+			rd_draw_minimap_tile(minimap, x, y);
 			x++;
 		}
 		y++;
 	}
-	set_minimap_border_image_pixels(minimap, MMAP_COLOR_SPACE);
+	rd_set_minimap_border_image(minimap, MMAP_COLOR_SPACE);
 }
 
 void	rd_render_minimap_img(t_data *data, t_minimap *minimap)
 {
 	int	img_size;
 
-	img_size = MMAP_PIXEL_SIZE + minimap->tile_size;
-	init_img(data, &data->minimap, img_size, img_size);
-	draw_minimap(minimap);
+	img_size = MMAP_SIZE + minimap->tile_size;
+	init_mlx_img(data, &data->minimap, img_size, img_size);
+	rd_draw_minimap(minimap);
 	mlx_put_image_to_window(data->mlx, data->window, data->minimap.img,
 		minimap->tile_size, data->win_height
-		- (MMAP_PIXEL_SIZE + (minimap->tile_size * 2)));
+		- (MMAP_SIZE + (minimap->tile_size * 2)));
 	mlx_destroy_image(data->mlx, data->minimap.img);
 }

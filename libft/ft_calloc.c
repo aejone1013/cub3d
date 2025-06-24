@@ -3,22 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mcombeau <mcombeau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/01 18:10:50 by jaoh              #+#    #+#             */
-/*   Updated: 2024/08/01 18:10:50 by jaoh             ###   ########.fr       */
+/*   Created: 2021/11/26 15:28:22 by mcombeau          #+#    #+#             */
+/*   Updated: 2021/12/02 16:49:19 by mcombeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t nbr_elements, size_t element_size)
-{
-	void	*ptr;
+/*
+	DESCRIPTION :
+	The function ft_calloc allocates memory for an array of count elements
+	of size bytes each and sets the memory to zero.
 
-	ptr = malloc(nbr_elements * element_size);
-	if (ptr == NULL)
+	RETURN VALUE :
+	The pointer to the allocated memory. NULL if the memory allocation fails.
+*/
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*r;
+
+	r = malloc(count * size);
+	if (!r)
 		return (NULL);
-	ft_bzero(ptr, nbr_elements * element_size);
-	return (ptr);
+	ft_bzero(r, size * count);
+	return (r);
 }

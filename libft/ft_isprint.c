@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: mcombeau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/01 18:12:23 by jaoh              #+#    #+#             */
-/*   Updated: 2024/08/01 18:12:23 by jaoh             ###   ########.fr       */
+/*   Created: 2021/11/22 13:50:49 by mcombeau          #+#    #+#             */
+/*   Updated: 2021/12/02 14:42:17 by mcombeau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isprint(int argument)
+/*
+	DESCRIPTION :
+	The function ft_isprint checks whether c is a printable character or not.
+
+	RETURN VALUE :
+	Non-zero if c is printable, zero if not.
+*/
+
+int	ft_isprint(int c)
 {
-	return (argument >= 32 && argument <= 126);
+	if (c >= 33 && c < 127)
+		return (1);
+	else
+		return (0);
 }
