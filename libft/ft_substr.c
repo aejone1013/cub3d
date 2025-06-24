@@ -3,44 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcombeau <mcombeau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/26 16:50:44 by mcombeau          #+#    #+#             */
-/*   Updated: 2021/12/02 16:53:34 by mcombeau         ###   ########.fr       */
+/*   Created: 2024/08/01 18:18:04 by jaoh              #+#    #+#             */
+/*   Updated: 2024/08/01 18:18:04 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-	DESCRIPTION :
-	The function ft_substr extracts a substring from the given string by
-	allocating sufficient memory for the new string starting at index start
-	and ending at len characters.
-
-	RETURN VALUE :
-	A pointer to the new string.
-	NULL if the memory allocation fails.
-*/
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*res;
-	char	*src;
-	size_t	reslen;
+	size_t	substr_length;
+	char	*substr;
 
 	if (!s)
 		return (NULL);
-	if (ft_strlen(s) < (size_t)start)
-		return (ft_strdup(""));
-	src = (char *)s + start;
-	if (ft_strlen(src) < len)
-		reslen = ft_strlen(src) + 1;
+	substr_length = ft_strlen(s) - start;
+	if (ft_strlen(s) > start)
+	{
+		if (substr_length > len)
+			substr = (char *) ft_calloc(len + 1, sizeof(char));
+		else
+			substr = (char *) ft_calloc(substr_length + 1, sizeof(char));
+		if (!substr)
+			return (NULL);
+		ft_strlcpy(substr, &s[start], len + 1);
+	}
 	else
-		reslen = len + 1;
-	res = malloc(reslen * sizeof(char));
-	if (!res)
-		return (NULL);
-	ft_strlcpy(res, src, reslen);
-	return (res);
+		substr = (char *) ft_calloc(1, sizeof(char));
+	return (substr);
 }

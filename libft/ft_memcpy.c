@@ -3,44 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcombeau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 15:02:13 by mcombeau          #+#    #+#             */
-/*   Updated: 2021/12/02 15:26:40 by mcombeau         ###   ########.fr       */
+/*   Created: 2024/08/01 18:14:21 by jaoh              #+#    #+#             */
+/*   Updated: 2024/08/01 18:14:21 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-	DESCRIPTION :
-	The function ft_memcpy copies n bytes from memory area src to memory
-	area dst.
-	Does not account for memory overlaps. Use ft_memmove if the memory areas
-	overlap or might overlap.
-
-	RETURN VALUE :
-	A pointer to dst. NULL if src and dst are both NULL.
-*/
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t length)
 {
-	char		*dp;
-	const char	*sp;
+	size_t		i;
+	char		*dest_ptr;
+	const char	*src_ptr;
 
-	if (!dst && !src)
-		return (0);
-	if (n == 0 || (dst == src))
-		return (dst);
-	dp = (char *)dst;
-	sp = (const char *)src;
-	while (n != 0)
+	i = 0;
+	if (!dest && !src)
+		return (NULL);
+	dest_ptr = (char *) dest;
+	src_ptr = (const char *) src;
+	while (i < length)
 	{
-		if (*dp != *sp)
-			*dp = *sp;
-		dp++;
-		sp++;
-		n--;
+		dest_ptr[i] = src_ptr[i];
+		i++;
 	}
-	return (dst);
+	return (dest);
 }

@@ -3,47 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcombeau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/23 15:57:19 by mcombeau          #+#    #+#             */
-/*   Updated: 2021/12/02 16:48:38 by mcombeau         ###   ########.fr       */
+/*   Created: 2024/08/01 18:14:26 by jaoh              #+#    #+#             */
+/*   Updated: 2024/08/01 18:14:26 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-	DESCRIPTION :
-	The function ft_memmove copies n bytes from memory area src to memory
-	area dst. The memory areas may overlap: if the dst pointer is found
-	to be between the src pointer and the index n, copying will be done
-	back to front to prevent data being modified before being copied.
-	Otherwise it will be done front to back	to preserve data.
-
-	RETURN VALUE :
-	A pointer to dst.
-*/
-
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dest, const void *src, size_t length)
 {
-	char		*dp;
-	const char	*sp;
+	char		*dest_ptr;
+	const char	*src_ptr;
 
-	if (src == dst)
-		return (dst);
-	dp = (char *)dst;
-	sp = (const char *)src;
-	if (sp < dp && sp + len > dp)
-		while (len--)
-			*(dp + len) = *(sp + len);
-	else
+	dest_ptr = (char *) dest;
+	src_ptr = (const char *) src;
+	if (dest > src)
 	{
-		while (len--)
+		while (length > 0)
 		{
-			*dp = *sp;
-			sp++;
-			dp++;
+			length--;
+			dest_ptr[length] = src_ptr[length];
 		}
 	}
-	return (dst);
+	else
+		ft_memcpy(dest, src, length);
+	return (dest);
 }
