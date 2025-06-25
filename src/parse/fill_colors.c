@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 01:18:37 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/25 00:36:38 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/25 14:22:54 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int	*ps_set_rgb_colors(char *line)
 int	ps_set_tex_colors(t_data *data, t_texinfo *textures, char *line, int j)
 {
 	if (line[j + 1] && ft_isprint(line[j + 1]))
-		return (err_msg(data->mapinfo.path, "Invalid floor/sky RGB color(s)", ERR));
+		return (err_msg(data->mapinfo.path, "Invalid floor/sky RGB color", ERR));
 	if (!textures->sky && line[j] == 'C')
 	{
 		textures->sky = ps_set_rgb_colors(line + j + 1);
@@ -88,6 +88,6 @@ int	ps_set_tex_colors(t_data *data, t_texinfo *textures, char *line, int j)
 			return (err_msg(data->mapinfo.path, "Invalid floor RGB color", ERR));
 	}
 	else
-		return (err_msg(data->mapinfo.path, "Invalid floor/sky RGB color(s)", ERR));
+		return (err_msg(data->mapinfo.path, "Invalid floor/sky RGB color", ERR));
 	return (SUCCESS);
 }

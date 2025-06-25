@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 15:13:24 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/24 20:05:28 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/25 14:47:11 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ void	rd_render_minimap(t_data *data)
 		err_msg(NULL, "Could not allocate memory", 0);
 		return ;
 	}
-	if (MMAP_DEBUG_MSG)
-		debug_display_minimap(&minimap);
 	rd_render_minimap_img(data, &minimap);
 	free_tab((void **)minimap.map);
 }

@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 19:46:26 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/24 20:10:20 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/25 14:47:07 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,16 @@ static void	rd_get_texture_idx(t_data *data, t_ray *ray)
 	if (ray->side == 0)
 	{
 		if (ray->dir_x < 0)
-			data->texinfo.idx = WEST;
+			data->texinfo.idx = W;
 		else
-			data->texinfo.idx = EAST;
+			data->texinfo.idx = E;
 	}
 	else
 	{
 		if (ray->dir_y > 0)
-			data->texinfo.idx = SOUTH;
+			data->texinfo.idx = S;
 		else
-			data->texinfo.idx = NORTH;
+			data->texinfo.idx = N;
 	}
 }
 
@@ -70,7 +70,7 @@ void	rd_update_tex_pixels(t_data *data, t_texinfo *tex, t_ray *ray, int x)
 		tex->y = (int)tex->pos & (tex->size - 1);
 		tex->pos += tex->step;
 		color = data->textures[tex->idx][tex->size * tex->y + tex->x];
-		if (tex->idx == NORTH || tex->idx == EAST)
+		if (tex->idx == N || tex->idx == E)
 			color = (color >> 1) & 8355711;
 		if (color > 0)
 			data->tex_pixels[y][x] = color;

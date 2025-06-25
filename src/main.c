@@ -24,8 +24,6 @@ static int	parse_args(t_data *data, char **av)
 	if (ps_tex_is_valid(data, &data->texinfo) == FAILURE)
 		return (free_data(data));
 	p_init_player_dir(data);
-	if (DEBUG_MSG)
-		debug_display_data(data);
 	return (0);
 }
 

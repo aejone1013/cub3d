@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 01:18:33 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/25 00:36:35 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/25 14:19:19 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,30 @@ static int	ps_count_map_lines(t_data *data, char **file, int i)
 	return (i - index_value);
 }
 
-static int	ps_fill_map(t_mapinfo *mapinfo, char **map_tab, int idx)
+static int	ps_fill_map(t_mapinfo *mapinfo, char **map, int idx)
 {
 	int		i;
 	int		j;
 
-	mapinfo->width = ps_get_biggest_len(mapinfo, idx);
+	mapinfo->width = ps_get_map_width(mapinfo, idx);
 	i = 0;
 	while (i < mapinfo->height)
 	{
 		j = 0;
-		map_tab[i] = malloc(sizeof(char) * (mapinfo->width + 1));
-		if (!map_tab[i])
+		map[i] = malloc(sizeof(char) * (mapinfo->width + 1));
+		if (!map[i])
 			return (err_msg(NULL, "Could not allocate memory", FAILURE));
 		while (mapinfo->file[idx][j] && mapinfo->file[idx][j] != '\n')
 		{
-			map_tab[i][j] = mapinfo->file[idx][j];
+			map[i][j] = mapinfo->file[idx][j];
 			j++;
 		}	
 		while (j < mapinfo->width)
-			map_tab[i][j++] = '\0';
+			map[i][j++] = '\0';
 		i++;
 		idx++;
 	}
-	map_tab[i] = NULL;
+	map[i] = NULL;
 	return (SUCCESS);
 }
 

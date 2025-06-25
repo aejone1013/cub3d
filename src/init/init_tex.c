@@ -45,10 +45,10 @@ void	init_tex(t_data *data)
 	data->textures = ft_calloc(5, sizeof * data->textures);
 	if (!data->textures)
 		ft_exit(data, err_msg(NULL, "Could not allocate memory", 1));
-	data->textures[NORTH] = xpm_to_img(data, data->texinfo.img_north);
-	data->textures[SOUTH] = xpm_to_img(data, data->texinfo.img_south);
-	data->textures[EAST] = xpm_to_img(data, data->texinfo.img_east);
-	data->textures[WEST] = xpm_to_img(data, data->texinfo.img_west);
+	data->textures[N] = xpm_to_img(data, data->texinfo.img_north);
+	data->textures[S] = xpm_to_img(data, data->texinfo.img_south);
+	data->textures[E] = xpm_to_img(data, data->texinfo.img_east);
+	data->textures[W] = xpm_to_img(data, data->texinfo.img_west);
 }
 
 void	init_texinfo(t_texinfo *textures)

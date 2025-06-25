@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 21:26:18 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/24 20:54:32 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/25 14:46:17 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,6 @@
 # include <X11/keysym.h>
 # include <X11/X.h>
 
-# ifndef DEBUG_MSG
-#  define DEBUG_MSG 0
-# endif
-
-# ifndef MMAP_DEBUG_MSG
-#  define MMAP_DEBUG_MSG 0
-# endif
-
 # ifndef BONUS
 #  define BONUS 1
 # endif
@@ -47,11 +39,11 @@
 # define WIN_WIDTH 960
 # define WIN_HEIGHT 720
 # define MMAP_SIZE 128
-# define MMAP_COLOR_PLAYER 0x00FF00
+# define MMAP_COLOR_PLAYER 0x0000FF
 # define MMAP_COLOR_WALL 0x808080
 # define MMAP_COLOR_FLOOR 0xE6E6E6
 # define MMAP_COLOR_SPACE 0x404040
-# define MOVESPEED 0.0125
+# define MOVESPEED 0.02
 # define ROTSPEED 0.015
 # define DIST_EDGE_MOUSE_WRAP 20
 
@@ -66,13 +58,11 @@ enum e_output
 
 enum e_texture
 {
-    NORTH = 0,
-    SOUTH = 1,
-    EAST = 2,
-    WEST = 3,
+    N = 0,
+    S = 1,
+    E = 2,
+    W = 3,
 };
-
-typedef unsigned long	t_ulong;
 
 typedef struct s_img
 {
@@ -82,17 +72,6 @@ typedef struct s_img
     int		size_line;
     int		endian;
 }	t_img;
-
-typedef struct s_minimap
-{
-	char	**map;
-	t_img	*img;
-	int		size;
-	int		offset_x;
-	int		offset_y;
-	int		view_dist;
-	int		tile_size;
-}	t_minimap;
 
 typedef struct s_texinfo
 {
@@ -159,6 +138,17 @@ typedef struct s_player
     int		rotate;
 }	t_player;
 
+typedef struct s_minimap
+{
+    char	**map;
+    t_img	*img;
+    int		size;
+    int		offset_x;
+    int		offset_y;
+    int		view_dist;
+    int		tile_size;
+}	t_minimap;
+
 typedef struct s_data
 {
     void		*mlx;
@@ -193,10 +183,10 @@ int		ps_set_tex_colors(t_data *data, t_texinfo *texinfo,
 		char *line, int j);
 int		ps_create_map(t_data *data, char **map, int i);
 int		ps_tex_is_valid(t_data *data, t_texinfo *texinfo);
-int		ps_map_is_valid(t_data *data, char **map_tab);
-int		ps_check_map_sides(t_mapinfo *map, char **map_tab);
+int		ps_map_is_valid(t_data *data, char **map);
+int		ps_check_sides(t_mapinfo *mapinfo, char **map);
 int		ps_is_whitespace(char c);
-size_t	ps_get_biggest_len(t_mapinfo *map, int i);
+size_t	ps_get_map_width(t_mapinfo *mapinfo, int i);
 
 /* render */
 void	rd_set_image_pixel(t_img *img, int x, int y, int color);
@@ -222,11 +212,5 @@ void	ft_exit(t_data *data, int code);
 int	    exit_cub3d(t_data *data);
 int	    err_msg(char *detail, char *str, int code);
 int     err_msg_val(int detail, char *str, int code);
-
-/* debug */
-void	debug_display_data(t_data *data);
-void	debug_display_minimap(t_minimap *minimap);
-void	debug_display_player(t_data *data);
-void	debug_print_char_tab(char **tab);
 
 #endif

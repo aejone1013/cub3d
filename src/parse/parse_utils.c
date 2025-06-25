@@ -6,7 +6,7 @@
 /*   By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 01:18:51 by jaoh              #+#    #+#             */
-/*   Updated: 2025/06/25 00:36:15 by jaoh             ###   ########.fr       */
+/*   Updated: 2025/06/25 14:47:19 by jaoh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	ps_is_whitespace(char c)
 		return (SUCCESS);
 }
 
-size_t	ps_get_biggest_len(t_mapinfo *map, int i)
+size_t	ps_get_map_width(t_mapinfo *mapinfo, int i)
 {
 	size_t	biggest_len;
 
-	biggest_len = ft_strlen(map->file[i]);
-	while (map->file[i])
+	biggest_len = ft_strlen(mapinfo->file[i]);
+	while (mapinfo->file[i])
 	{
-		if (ft_strlen(map->file[i]) > biggest_len)
-			biggest_len = ft_strlen(map->file[i]);
+		if (ft_strlen(mapinfo->file[i]) > biggest_len)
+			biggest_len = ft_strlen(mapinfo->file[i]);
 		i++;
 	}
 	return (biggest_len);

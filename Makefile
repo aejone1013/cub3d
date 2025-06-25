@@ -6,7 +6,7 @@
 #    By: jaoh <jaoh@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/15 20:36:57 by jaoh              #+#    #+#              #
-#    Updated: 2025/06/25 00:37:34 by jaoh             ###   ########.fr        #
+#    Updated: 2025/06/25 14:46:45 by jaoh             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,9 @@ LIBFT		= ${LIBFT_DIR}/libft.a
 
 MLX 		= ${MLX_DIR}/libmlx.a
 
-SRC			= main.c debug.c
+SRC			= main.c
 SRC_INIT	= init_data.c init_mlx.c init_tex.c
-SRC_PARSE	= check_arg.c check_map_borders.c check_map.c check_tex.c \
+SRC_PARSE	= parse_arg.c parse_map_borders.c parse_map.c parse_tex.c \
 				create_map.c fill_colors.c get_file_data.c parse.c parse_utils.c
 SRC_PLAYER	= move.c rotate.c position.c direction.c input.c
 SRC_RENDER	= image_utils.c minimap_image.c minimap_render.c raycasting.c render.c texture.c
