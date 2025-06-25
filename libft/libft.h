@@ -40,7 +40,7 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 size_t	ft_strlcat(char *dest, const char *src, size_t dest_size);
 int		ft_toupper(int argument);
 int		ft_tolower(int argument);
-char	*ft_strchr(const char *str, int argument);
+char	*ft_strchr(const char *str, int c);
 char	*ft_strrchr(const char *str, int argument);
 int		ft_strncmp(const char *s1, const char *s2, size_t size);
 void	*ft_memchr(const void *str, int argument, size_t size);
@@ -48,7 +48,7 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	*ft_strnstr(const char *str, const char *to_find, size_t size);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t nbr_elements, size_t element_size);
-char	*ft_strdup(char *src);
+char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
@@ -84,5 +84,8 @@ void	ft_free_ptr(char **ptr);
 char	ft_decimal_converter_to_hex(char digit, char type);
 int		ft_hex_length(unsigned long nbr);
 int		ft_print_reversed_str(char *str);
+char	*f_strchr(char *s, int c);
+char	*f_strdup(char *s1);
+char	*f_strjoin(char *s1, char *s2);
 
 #endif

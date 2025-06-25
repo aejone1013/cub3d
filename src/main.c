@@ -10,82 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
-int	malloc_free(t_data *data)
+static int	parse_args(t_data *data, char **av)
 {
-    int	i;
-
-    i = -1;
-    ft_printf("window closed\n");
-    while (data->map.map[++i])
-        free(data->map.map[i]);
-    free(data->map.map);
-    mlx_destroy_window(data->mlx, data->window);
-    mlx_destroy_image(data->mlx, data->tex.tex_img[N]);
-    mlx_destroy_image(data->mlx, data->tex.tex_img[S]);
-    mlx_destroy_image(data->mlx, data->tex.tex_img[E]);
-    mlx_destroy_image(data->mlx, data->tex.tex_img[W]);
-    free(data->mlx);
-    exit(0);
-    return (0);
-}
-
-/*void	start_game(t_data *data)
-{
-    mlx_loop_hook(data->mlx, rc_rendering, data);
-    mlx_hook(data->window, KeyPress, KeyPressMask, &key_events, data);
-    mlx_hook(data->window, DestroyNotify, StructureNotifyMask, &cleanup, data);
-    mlx_hook(data->window, ButtonPress, ButtonPressMask, &mouse_press, data);
-    mlx_hook(data->window, MotionNotify, PointerMotionMask, &mouse_move, data);
-    mlx_loop(data->mlx);
-}*/
-
-void	init_vec(t_player *player, char c)
-{
-
-	if (c == 'N')
-	{
-		player->direction.x = 0.0;
-		player->direction.y = -1.0;
-		player->camera.x = 0.66;
-		player->camera.y = 0.0;
-	}
-	else if (c == 'S')
-	{
-		player->direction.x = 0.0;
-		player->direction.y = 1.0;
-		player->camera.x = -0.66;
-		player->camera.y = 0.0;
-	}
-	else if (c == 'E')
-	{
-		player->direction.x = 1.0;
-		player->direction.y = 0.0;
-		player->camera.x = 0.0;
-		player->camera.y = 0.66;
-	}
-	else if (c == 'W')
-	{
-		player->direction.x = -1.0;
-		player->direction.y = 0.0;
-		player->camera.x = 0.;
-		player->camera.y = -0.66;
-	}
+	if (ps_check_file(av[1], true) == FAILURE)
+		ft_exit(data, FAILURE);
+	ps_parse(av[1], data);
+	if (ps_get_file_data(data, data->mapinfo.file) == FAILURE)
+		return (free_data(data));
+	if (ps_map_is_valid(data, data->map) == FAILURE)
+		return (free_data(data));
+	if (ps_tex_is_valid(data, &data->texinfo) == FAILURE)
+		return (free_data(data));
+	p_init_player_dir(data);
+	return (0);
 }
 
 int	main(int ac, char **av)
 {
-    t_data	data;
+	t_data	data;
 
-    if (ac != 2)
-    {
-        ft_printf("Error\nnote : this program takes one map.\n");
-        exit(0);
-    }
-    init_data(&data, av[1]);
-    read_map(&data);
-	init_vec(&data.player, data.parsing.player_caracter);
-    // start_game(&data);
-    return (0);
+	if (ac != 2)
+		return (err_msg("Usage: ", "./cub3d <path to map.cub>", 1));
+	init_data(&data);
+	if (parse_args(&data, av) != 0)
+		return (1);
+	init_mlx(&data);
+	init_tex(&data);
+	rd_render_img(&data);
+	p_input_handler(&data);
+	mlx_loop_hook(data.mlx, rd_render, &data);
+	mlx_loop(data.mlx);
+	return (0);
 }
