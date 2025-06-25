@@ -12,30 +12,51 @@
 
 #include "libft.h"
 
+static	int	ft_isblank(char a);
+
+static	int	ft_error(int sign);
+
 int	ft_atoi(const char *str)
 {
-	int	num;
-	int	isneg;
-	int	i;
+	int	nbr;
+	int	sign;
+	int	nbr_len;
 
-	num = 0;
-	isneg = 1;
-	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'
-			|| str[i] == '\n' || str[i] == '\r'
-			|| str[i] == '\v' || str[i] == '\f'))
-		i++;
-	if (str[i] == '+')
-		i++;
-	else if (str[i] == '-')
+	nbr = 0;
+	sign = 1;
+	nbr_len = 0;
+	while (ft_isblank(*str))
+		str++;
+	if (*str == '-' || *str == '+')
 	{
-		isneg *= -1;
-		i++;
+		if (*str == '-')
+			sign = -1;
+		str++;
 	}
-	while (ft_isdigit(str[i]))
+	while (ft_isdigit(*str))
 	{
-		num = (num * 10) + (str[i] - '0');
-		i++;
+		if (++nbr_len == 20)
+			return (ft_error(sign));
+		nbr = (*str - 48) + nbr * 10;
+		str++;
 	}
-	return (num * isneg);
+	return (nbr * sign);
+}
+
+static	int	ft_isblank(char a)
+{
+	return ((a == '\n')
+		|| (a == '\v')
+		|| (a == '\f')
+		|| (a == '\t')
+		|| (a == '\r')
+		|| (a == ' '));
+}
+
+static	int	ft_error(int sign)
+{
+	if (sign > 0)
+		return (-1);
+	else
+		return (0);
 }

@@ -56,7 +56,6 @@ SRCS 		= ft_isalpha.c 			\
 			ft_putnbr_fd.c			\
 			ft_count_occurrences.c	\
 			get_next_line.c			\
-			gnl_utils.c				\
 			ft_printf.c				\
 			ft_argument_c.c			\
 			ft_arguments_d_i.c		\

@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isprint(int c)
+int	ft_isprint(int argument)
 {
-	if (c >= 33 && c < 127)
-		return (1);
-	else
-		return (0);
+	return (argument >= 32 && argument <= 126);
 }
